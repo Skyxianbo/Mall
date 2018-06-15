@@ -47,13 +47,13 @@
         <div class="filter">
             <el-form class="form-container">
                 <el-form-item>
-                    <div :class="['title', {active: !search.classifyId}]" @click="chooseClassify">全部分类</div>
+                    <div :class="['title', {active: !search.classifyId}]" @click="chooseClassify()">全部分类</div>
                     <ul>
                         <li :class="{active: item.id == search.classifyId}" v-for="item in classifyList" @click="chooseClassify(item.id)">{{item.name}}</li>
                     </ul>
                 </el-form-item>
                 <el-form-item>
-                    <div :class="['title', {active: !search.brandId}]" @click="chooseBrand">全部品牌</div>
+                    <div :class="['title', {active: !search.brandId}]" @click="chooseBrand()">全部品牌</div>
                     <ul>
                         <li :class="{active: item.id == search.brandId}" v-for="item in brandList" @click="chooseBrand(item.id)">{{item.name}}</li>
                     </ul>
@@ -133,7 +133,6 @@ export default {
     created() {
         this.getClassify();
         this.getBrand();
-        this.fetchData();
     },
     mounted() {
         this.boxTop = this.$refs.indexTable.getBoundingClientRect().top;
@@ -168,7 +167,7 @@ export default {
             }
             getGoods(param).then(res => {
                 this.list = res.returnValue.list;
-                this.total = res.returnValue.total;
+                this.total = res.returnValue.totalCount;
             })
         },
         handleResize() {
@@ -180,7 +179,7 @@ export default {
         },
         handleCurrentChange(val) {
             this.pageNum = val;
-            this.fetchData();
+            // this.fetchData();
         },
         chooseClassify(id) {
             this.search.classifyId = id;

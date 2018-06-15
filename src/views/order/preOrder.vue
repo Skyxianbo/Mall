@@ -43,7 +43,7 @@
 			<div class="title-block">购买配置</div>
 			<el-row>
 				<el-form-item label="付款图片上传" prop="imageUrl">
-					<el-upload class="upload-demo" :action="uploadUrl" :on-success="fileUploadData" :limit="1" :file-list="fileList" list-type="picture">
+					<el-upload class="upload-demo" :action="uploadUrl" :on-success="fileUploadData" :limit="1" :file-list="fileList" list-type="picture" style="width: 400px;">
 						<el-button size="small" type="primary">点击上传</el-button>
 					</el-upload>
 				</el-form-item>

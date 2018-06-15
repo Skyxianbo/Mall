@@ -71,6 +71,21 @@ export const constantRouterMap = [
       meta: { title: '预下单页', icon: 'example', noCache: false, new: true }
     }]
   },
+  //修改密码
+  {
+    path: '/changePassword',
+    component: Layout,
+    redirect: '/changePassword/index',
+    name: 'changePassword',
+    meta: { title: '修改密码', icon: 'example', noCache: false, new: true },
+    children: [{
+      path: 'index',
+      name: 'ChangePassword',
+      hidden: false,
+      component: _import('changePassword/index'),
+      meta: { title: '修改密码', icon: 'example', noCache: false, new: true }
+    }]
+  },
   //通知公告
   {
     path: '/notice',
@@ -101,21 +116,7 @@ export const constantRouterMap = [
       meta: { title: '合作须知', icon: 'example', noCache: false, new: true }
     }]
   },
-  //公司介绍
-  {
-    path: '/introduce',
-    component: Layout,
-    redirect: '/introduce/index',
-    name: 'introduce',
-    meta: { title: '公司介绍', icon: 'example', noCache: false, new: true },
-    children: [{
-      path: 'index',
-      name: 'Introduce',
-      hidden: false,
-      component: _import('introduce/index'),
-      meta: { title: '公司介绍', icon: 'example', noCache: false, new: true }
-    }]
-  },
+
   { path: '*', redirect: '/404', hidden: true }
 ]
 

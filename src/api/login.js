@@ -33,3 +33,14 @@ export function getPermission(params) {
     params: params
   })
 }
+
+export function changePassword(id, password) {
+  return request({
+    url: '/user/add',
+    method: 'post',
+    data: {
+      id: id,
+      passWord: password
+    }
+  })
+}

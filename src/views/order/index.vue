@@ -7,13 +7,17 @@
         margin-left: 10px;
     }
 }
-
+.red {
+    color: red;
+}
 </style>
 <template>
     <div class="app-container">
         <div class="filter">
             <el-form class="form-container">
                 <el-input v-model="keywords" size="medium" placeholder="请输入订单ID/商品名称"></el-input>
+                <el-date-picker v-model="datetime" type="daterange" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" size="medium">
+                </el-date-picker>
                 <el-button type="primary" size="medium" @click="fetchData()">查询</el-button>
             </el-form>
         </div>
@@ -26,22 +30,22 @@
                 </el-table-column>
                 <el-table-column label="商品名称" align="center">
                     <template slot-scope="scope">
-                        {{scope.row.goodsName}}
+                        {{scope.row.name}}
                     </template>
                 </el-table-column>
                 <el-table-column label="型号" align="center">
                     <template slot-scope="scope">
-                        {{scope.row.goodsModel}}
+                        {{scope.row.model}}
                     </template>
                 </el-table-column>
                 <el-table-column label="配置" align="center">
                     <template slot-scope="scope">
-                        {{scope.row.goodsConfig}}
+                        {{scope.row.config}}
                     </template>
                 </el-table-column>
                 <el-table-column label="颜色" align="center">
                     <template slot-scope="scope">
-                        {{scope.row.goodsColor}}
+                        {{scope.row.color}}
                     </template>
                 </el-table-column>
                 <el-table-column label="单价" align="center">
@@ -66,7 +70,9 @@
                 </el-table-column>
                 <el-table-column label="是否发货" align="center">
                     <template slot-scope="scope">
-                        {{scope.row.audit}}
+                        <span :class="{red: scope.row.audit == 0}">
+                            {{scope.row.audit == 1 ? "已发货" : "未发货"}}
+                        </span>
                     </template>
                 </el-table-column>
                 <el-table-column label="快递单号" align="center">
@@ -76,7 +82,7 @@
                 </el-table-column>
                 <el-table-column label="时间" align="center">
                     <template slot-scope="scope">
-                        {{scope.row.datetime}}
+                        {{scope.row.createTime}}
                     </template>
                 </el-table-column>
                 <el-table-column label="地址" align="center">
@@ -105,6 +111,7 @@
 <script>
 import { getOrder } from '@/api/order';
 import { openImageBox } from '@/utils/common';
+import { formatDate } from '@/utils/data';
 export default {
     data() {
         return {
@@ -115,6 +122,7 @@ export default {
             pageNum: 1,
             pageSize: 20,
             keywords: '',
+            datetime: [new Date(Date.now() - 86400000 * 30), new Date(Date.now())],
         }
     },
     created() {
@@ -129,12 +137,15 @@ export default {
         fetchData() {
             let param = {
                 keywords: this.keywords,
+                startTime: formatDate(this.datetime[0]) + ' 00:00:00',
+                endTime: formatDate(this.datetime[1]) + ' 23:59:59',
                 pageSize: this.pageSize,
-                pageNum: this.pageNum
+                pageNum: this.pageNum,
+                type: 1
             }
             getOrder(param).then(res => {
                 this.list = res.returnValue.list;
-                this.total = res.returnValue.total;
+                this.total = res.returnValue.totalCount;
             })
         },
         handleResize() {

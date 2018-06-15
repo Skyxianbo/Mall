@@ -14,15 +14,13 @@ router.beforeEach((to, from, next) => {
       removeToken();
       next({ path: '/' })
     } else {
-      next();
-      // store.dispatch('GetInfo').then(() => {
-      //   next();
-      // }).catch(() => {
-      //   store.dispatch('FedLogOut').then(() => {
-      //     Message.error('验证失败,请重新登录')
-      //     next({ path: '/login' })
-      //   })
-      // })
+      store.dispatch('GetInfo').then(() => {
+        next();
+      }).catch(() => {
+        store.dispatch('LogOut').then(() => {
+          location.reload();
+        })
+      })
     }
   } else {
     if (whiteList.indexOf(to.path) !== -1) {

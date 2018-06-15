@@ -2,7 +2,7 @@
 	<div class="app-header" v-if="show">
 		<div class="app-name">
 			<p>手机商城</p>
-        </div>
+		</div>
 		<div class="user-info">
 			<section class="date">
 				<p>{{date}}</p>
@@ -13,15 +13,18 @@
 			</section>
 		</div>
 		<div class="navbar">
-			<ul>
-				<li :class="{active: $route.name == item.children[0].name}" v-for="item in routerList" v-if="!item.hidden">
-					<router-link :to="item.path" :key="item.path">{{item.children[0].meta.title}}</router-link>
-				</li>
+			<div class="items">
+				<router-link class="item" :class="{active: $route.name == item.children[0].name}" :to="item.path" :key="item.path" v-for="item in routerList" v-if="!item.hidden">
+						{{item.children[0].meta.title}}
+				</router-link>
+			</div>
+
 			</ul>
 		</div>
 	</div>
 </template>
 <script>
+import { getUser } from '@/utils/auth';
 export default {
 	computed: {
 		date: function() {
@@ -30,13 +33,16 @@ export default {
 			return myDate.getFullYear() + '年' + (myDate.getMonth() + 1) + '月' + myDate.getDate() + '日' + ' 星期' + week[myDate.getDay()];
 		},
 		username: function() {
-			return this.$store.state.user.name || 'Sky';
+			return this.$store.state.user.name || this.user.userName;
 		},
 		show: function() {
 			return (this.$route.name != 'login' && this.$route.name != 'error');
 		},
 		routerList: function() {
 			return this.$router.options.routes;
+		},
+		user: function() {
+			return getUser() || {};
 		}
 	},
 	methods: {
@@ -98,12 +104,12 @@ export default {
 		margin-right: 50px;
 		background-color: rgb(114, 187, 222);
 		border-radius: 20px;
-		ul {
+		.items {
 			display: flex;
 			height: 55px;
 			margin: 0;
 			padding: 0 30px;
-			li {
+			.item {
 				width: 80px;
 				height: 55px;
 				line-height: 55px;
