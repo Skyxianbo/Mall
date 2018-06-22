@@ -35,6 +35,14 @@ export const constantRouterMap = [
       component: _import('login/index')
     }]
   },
+  //首页
+  {
+    path: '/home',
+    component: _import('home/index'),
+    name: 'home',
+    hidden: true,
+    meta: { noCache: true }
+  },
   //今日报价
   {
     path: '/goods',

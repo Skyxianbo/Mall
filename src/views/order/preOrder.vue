@@ -27,10 +27,16 @@
 						<span>{{showData.color}}</span>
 					</el-form-item>
 				</el-col>
-				<!-- 商品价格 -->
+				<!-- 全国价格 -->
 				<el-col :span="24">
-					<el-form-item prop="price" label="商品价格" class="postInfo-container-item">
+					<el-form-item prop="price" label="全国价格" class="postInfo-container-item">
 						<span>{{showData.price}}</span>
+					</el-form-item>
+				</el-col>
+				<!-- 省内价格 -->
+				<el-col :span="24">
+					<el-form-item prop="provincePrice" label="省内价格" class="postInfo-container-item">
+						<span>{{showData.provincePrice}}</span>
 					</el-form-item>
 				</el-col>
 				<!-- 商品库存 -->
@@ -47,6 +53,15 @@
 						<el-button size="small" type="primary">点击上传</el-button>
 					</el-upload>
 				</el-form-item>
+				<!-- 选择全国价格还是省内价格 -->
+				<el-col :span="24">
+					<el-form-item prop="isNationwide" label="选择价格" class="postInfo-container-item">
+						<el-radio-group v-model="formData.isNationwide">
+							<el-radio label="1">全国价格</el-radio>
+							<el-radio label="2">省内价格</el-radio>
+						</el-radio-group>
+					</el-form-item>
+				</el-col>
 				<!-- 购买数量 -->
 				<el-col :span="24">
 					<el-form-item prop="number" label="购买数量" class="postInfo-container-item">
@@ -89,7 +104,7 @@
 </template>
 <script>
 import { getGoods } from '@/api/goods';
-import { addOrder } from '@/api/order';
+import { addOrder, checkOrder } from '@/api/order';
 import { getToken } from '@/utils/auth';
 export default {
 	data() {
@@ -103,19 +118,20 @@ export default {
 				adress: '',
 				number: '',
 				imageUrl: '',
+				isNationwide: '1'
 			},
 			uploadUrl: `${process.env.BASE_API}/image/upload?token=${getToken()}`,
 			rules: {
-                person: [{ required: true, message: "请填写收货人" }],
-                tel: [{ required: true, message: "请填写联系方式" }],
-                adress: [{ required: true, message: "请填写地址" }],
-                number: [{ required: true, message: "请填写购买数量" }],
+				person: [{ required: true, message: "请填写收货人" }],
+				tel: [{ required: true, message: "请填写联系方式" }],
+				adress: [{ required: true, message: "请填写地址" }],
+				number: [{ required: true, message: "请填写购买数量" }],
 			}
 		}
 	},
 	computed: {
 		totalPrice() {
-			return this.showData.price * this.formData.number;
+			return this.formData.isNationwide == 1 ? this.showData.price * this.formData.number : this.showData.provincePrice * this.formData.number;
 		}
 	},
 	created() {
@@ -144,22 +160,31 @@ export default {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-				addOrder({
-					goodsId: this.showData.id,
-					goodsName: this.showData.name,
-					number: this.formData.number,
-					imageUrl: this.formData.imageUrl,
-					price: this.showData.price,
-					adress: this.formData.adress,
-					person: this.formData.person,
-					tel: this.formData.tel,
-					totalPrice: this.totalPrice
+				checkOrder({
+					isPay: 0
 				}).then(res => {
-					this.$message({
-						type: 'success',
-						message: '已提交订单!'
-					});
-					this.$router.push({ name: 'order' });
+					if (!res.returnValue) {
+						this.$message('您当前存在未付清货款，无法下单');
+						return;
+					} else {
+						addOrder({
+							goodsId: this.showData.id,
+							goodsName: this.showData.name,
+							number: this.formData.number,
+							imageUrl: this.formData.imageUrl,
+							price: this.showData.price,
+							adress: this.formData.adress,
+							person: this.formData.person,
+							tel: this.formData.tel,
+							totalPrice: this.totalPrice
+						}).then(res => {
+							this.$message({
+								type: 'success',
+								message: '已提交订单!'
+							});
+							this.$router.push({ name: 'order' });
+						})
+					}
 				})
 			}).catch(() => {})
 		},

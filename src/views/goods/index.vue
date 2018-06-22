@@ -41,6 +41,12 @@
     }
 }
 
+.el-dialog p {
+    font-size: 28px;
+    text-align: center;
+    line-height: 1.5;
+}
+
 </style>
 <template>
     <div class="app-container">
@@ -62,6 +68,7 @@
                     <div class="title">名称</div>
                     <el-input v-model="search.keywords" size="medium" placeholder="请输入关键字"></el-input>
                     <el-button type="primary" size="medium" @click="fetchData()">查询</el-button>
+                    <el-button type="primary" size="medium" @click="test()">测试</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -87,9 +94,14 @@
                         {{scope.row.color}}
                     </template>
                 </el-table-column>
-                <el-table-column label="价格" align="center">
+                <el-table-column label="全国价格" align="center">
                     <template slot-scope="scope">
                         <span style="color: red;">￥{{scope.row.price}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="省内价格" align="center">
+                    <template slot-scope="scope">
+                        <span style="color: red;">￥{{scope.row.provincePrice}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="库存" align="center">
@@ -108,10 +120,17 @@
                 </el-pagination>
             </div>
         </div>
+        <el-dialog title="通知公告" :visible.sync="ifDialog" :show-close="showClose" :close-on-click-modal="showClose" width="600px">
+            <p>{{notice}}</p>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="ifDialog = false" :disabled="!showClose">关 闭</el-button>
+              </span>
+        </el-dialog>
     </div>
 </template>
 <script>
 import { getGoods, addGoods, getClassify, getBrand } from '@/api/goods';
+import { getNotice } from '@/api/notice';
 export default {
     data() {
         return {
@@ -123,6 +142,9 @@ export default {
             total: 0,
             pageNum: 1,
             pageSize: 20,
+            notice: '',
+            ifDialog: false,
+            showClose: false,
             search: {
                 classifyId: '',
                 brandId: '',
@@ -130,7 +152,15 @@ export default {
             }
         }
     },
+    computed: {
+        firstLogin: function() {
+            return this.$store.state.user.firstLogin;
+        }
+    },
     created() {
+        // if (this.firstLogin) {
+        this.getNotice();
+        // }
         this.getClassify();
         this.getBrand();
     },
@@ -188,6 +218,37 @@ export default {
         chooseBrand(id) {
             this.search.brandId = id;
             this.fetchData();
+        },
+        getNotice() {
+            getNotice({
+                type: 1
+            }).then(res => {
+                this.notice = res.returnValue.content;
+                this.ifDialog = true;
+                setTimeout(() => {
+                    this.showClose = true;
+                }, 5000)
+                // this.$notify({
+                //     title: '通知公告',
+                //     message: this.notice,
+                //     // showClose: false,
+                //     duration: 0
+                // })
+                // console.log(this.$notify.close);
+                // setTimeout(() => {
+                //     this.$store.dispatch('SET_FIRST_LOGIN');
+                //     this.$notify.closeAll();
+                //     // this.$notify({
+                //     //     title: '通知公告',
+                //     //     message: this.notice,
+                //     //     duration: 0
+                //     // })
+                // }, 1000)
+            })
+        },
+        test() {
+            this.$notify.close()
+
         }
     }
 }

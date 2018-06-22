@@ -1,5 +1,5 @@
 <template>
-  <el-menu class="navbar" mode="horizontal" v-if="$route.name != 'login' && $route.name != 'error'">
+  <el-menu class="navbar" mode="horizontal" v-if="show">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
     <!-- <el-dropdown class="avatar-container" trigger="click">
@@ -35,7 +35,10 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar'
-    ])
+    ]),
+    show: function() {
+      return (this.$route.name != 'login' && this.$route.name != 'error' && this.$route.name != 'home');
+    }
   },
   methods: {
     toggleSideBar() {

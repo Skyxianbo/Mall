@@ -1,5 +1,5 @@
 <template>
-    <scroll-pane class='tags-view-container' ref='scrollPane' v-if="$route.name != 'login' && $route.name != 'error'">
+    <scroll-pane class='tags-view-container' ref='scrollPane' v-if="show">
         <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path" :key="tag.path">
             {{tag.title}}
             <span class='el-icon-close' @click='closeViewTags(tag,$event)'></span>
@@ -16,6 +16,9 @@ export default {
     computed: {
         visitedViews() {
             return this.$store.state.tagsView.visitedViews;
+        },
+        show: function() {
+            return (this.$route.name != 'login' && this.$route.name != 'error' && this.$route.name != 'home');
         }
     },
     mounted() {

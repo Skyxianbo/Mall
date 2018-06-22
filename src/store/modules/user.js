@@ -3,7 +3,8 @@ import { getToken, setToken, removeToken, setUser, removeUser } from '@/utils/au
 const user = {
   state: {
     token: getToken(),
-    user: {}
+    user: {},
+    firstLogin: false
   },
 
   mutations: {
@@ -12,6 +13,9 @@ const user = {
     },
     SET_USER: (state, user) => {
       state.user = user
+    },
+    SET_FIRST_LOGIN: (state, status) => {
+      state.firstLogin = status;
     }
   },
 
@@ -26,6 +30,7 @@ const user = {
           setUser(data);
           commit('SET_TOKEN', data.token)
           commit('SET_USER', data);
+          commit('SET_FIRST_LOGIN', true);
           resolve()
         }).catch(error => {
           reject(error)
@@ -63,6 +68,13 @@ const user = {
         resolve()
       })
     },
+    // 关闭首次登录
+    CancelFirstLogin({ commit }) {
+      return new Promise(resolve => {
+        commit('SET_FIRST_LOGIN', false);
+        resolve();
+      })
+    }
   }
 }
 

@@ -36,7 +36,7 @@ export default {
 			return this.$store.state.user.name || this.user.userName;
 		},
 		show: function() {
-			return (this.$route.name != 'login' && this.$route.name != 'error');
+			return (this.$route.name != 'login' && this.$route.name != 'error' && this.$route.name != 'home');
 		},
 		routerList: function() {
 			return this.$router.options.routes;

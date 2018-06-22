@@ -15,3 +15,11 @@ export function addOrder(param) {
     data: param
   })
 }
+
+export function checkOrder(param) {
+  return request({
+    url: '/order/check',
+    method: 'get',
+    params: param
+  })
+}

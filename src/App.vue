@@ -27,9 +27,6 @@ export default {
       return key;
       // return this.$router.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date();
     }
-  },
-  created() {
-    console.log('当前版本修改时间 2018-05-19 14:20');
   }
 }
 
