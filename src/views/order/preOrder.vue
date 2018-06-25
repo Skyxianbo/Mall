@@ -4,11 +4,11 @@
 			<div class="title-block">商品信息</div>
 			<el-row>
 				<!-- 商品名称 -->
-				<el-col :span="24">
+				<!-- <el-col :span="24">
 					<el-form-item prop="name" label="商品名称" class="postInfo-container-item">
 						<span>{{showData.name}}</span>
 					</el-form-item>
-				</el-col>
+				</el-col> -->
 				<!-- 商品型号 -->
 				<el-col :span="24">
 					<el-form-item prop="model" label="商品型号" class="postInfo-container-item">

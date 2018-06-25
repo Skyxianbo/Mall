@@ -68,17 +68,16 @@
                     <div class="title">名称</div>
                     <el-input v-model="search.keywords" size="medium" placeholder="请输入关键字"></el-input>
                     <el-button type="primary" size="medium" @click="fetchData()">查询</el-button>
-                    <el-button type="primary" size="medium" @click="test()">测试</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <div ref="indexTable">
             <el-table :height="height" :data="list" element-loading-text="Loading" border fit highlight-current-row>
-                <el-table-column label="商品名称" align="center">
+                <!-- <el-table-column label="商品名称" align="center">
                     <template slot-scope="scope">
                         {{scope.row.name}}
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="型号" align="center">
                     <template slot-scope="scope">
                         {{scope.row.model}}
@@ -158,9 +157,7 @@ export default {
         }
     },
     created() {
-        // if (this.firstLogin) {
         this.getNotice();
-        // }
         this.getClassify();
         this.getBrand();
     },
@@ -209,7 +206,7 @@ export default {
         },
         handleCurrentChange(val) {
             this.pageNum = val;
-            // this.fetchData();
+            this.fetchData();
         },
         chooseClassify(id) {
             this.search.classifyId = id;
@@ -228,27 +225,7 @@ export default {
                 setTimeout(() => {
                     this.showClose = true;
                 }, 5000)
-                // this.$notify({
-                //     title: '通知公告',
-                //     message: this.notice,
-                //     // showClose: false,
-                //     duration: 0
-                // })
-                // console.log(this.$notify.close);
-                // setTimeout(() => {
-                //     this.$store.dispatch('SET_FIRST_LOGIN');
-                //     this.$notify.closeAll();
-                //     // this.$notify({
-                //     //     title: '通知公告',
-                //     //     message: this.notice,
-                //     //     duration: 0
-                //     // })
-                // }, 1000)
             })
-        },
-        test() {
-            this.$notify.close()
-
         }
     }
 }
