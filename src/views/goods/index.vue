@@ -65,7 +65,7 @@
                     </ul>
                 </el-form-item>
                 <el-form-item>
-                    <div class="title">名称</div>
+                    <div class="title">型号</div>
                     <el-input v-model="search.keywords" size="medium" placeholder="请输入关键字"></el-input>
                     <el-button type="primary" size="medium" @click="fetchData()">查询</el-button>
                 </el-form-item>
@@ -157,7 +157,9 @@ export default {
         }
     },
     created() {
-        this.getNotice();
+        if (this.firstLogin) {
+            this.getNotice();
+        }
         this.getClassify();
         this.getBrand();
     },
@@ -224,6 +226,7 @@ export default {
                 this.ifDialog = true;
                 setTimeout(() => {
                     this.showClose = true;
+                    this.$store.dispatch('CancelFirstLogin');
                 }, 5000)
             })
         }

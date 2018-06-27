@@ -48,14 +48,14 @@
             <h3 class="title">登 录</h3>
             <el-form-item prop="username">
                 <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
-        </span>
+                  <svg-icon icon-class="user" />
+                </span>
                 <el-input name="username" size="medium" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
             </el-form-item>
             <el-form-item prop="password">
                 <span class="svg-container">
-          <svg-icon icon-class="password"></svg-icon>
-        </span>
+                    <svg-icon icon-class="password"></svg-icon>
+                </span>
                 <el-input name="password" size="medium" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password"></el-input>
                 <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
             </el-form-item>
@@ -63,6 +63,9 @@
                 <el-button type="primary" :loading="loading" @click.native.prevent="handleLogin">
                     Sign in
                 </el-button>
+            </el-form-item>
+            <el-form-item>
+                <a href="http://47.106.191.91:8088/" target="_blank" style="float:right; color: #409EFF;marginRight: 40px;">管理员登录</a>
             </el-form-item>
         </el-form>
     </div>

@@ -15,7 +15,7 @@
     <div class="app-container">
         <div class="filter">
             <el-form class="form-container">
-                <el-input v-model="keywords" size="medium" placeholder="请输入订单ID/商品名称"></el-input>
+                <el-input v-model="keywords" size="medium" placeholder="请输入订单ID/商品型号"></el-input>
                 <el-date-picker v-model="datetime" type="daterange" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" size="medium">
                 </el-date-picker>
                 <el-button type="primary" size="medium" @click="fetchData()">查询</el-button>

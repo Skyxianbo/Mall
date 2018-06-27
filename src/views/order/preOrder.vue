@@ -163,7 +163,7 @@ export default {
 				checkOrder({
 					isPay: 0
 				}).then(res => {
-					if (!res.returnValue) {
+					if (res.returnValue && res.returnValue.length != 0) {
 						this.$message('您当前存在未付清货款，无法下单');
 						return;
 					} else {
@@ -172,7 +172,7 @@ export default {
 							goodsName: this.showData.name,
 							number: this.formData.number,
 							imageUrl: this.formData.imageUrl,
-							price: this.showData.price,
+							price: this.formData.isNationwide == 1 ? this.showData.price : this.showData.provincePrice,
 							adress: this.formData.adress,
 							person: this.formData.person,
 							tel: this.formData.tel,
