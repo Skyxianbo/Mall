@@ -65,7 +65,7 @@
 				<!-- 购买数量 -->
 				<el-col :span="24">
 					<el-form-item prop="number" label="购买数量" class="postInfo-container-item">
-						<el-input-number v-model="formData.number" :min="1" label="购买数量" style="width: 200px;"></el-input-number>
+						<el-input-number v-model="formData.number" :min="1" :max="showData.number" label="购买数量" style="width: 200px;"></el-input-number>
 					</el-form-item>
 				</el-col>
 				<!-- 商品总价 -->
@@ -151,6 +151,15 @@ export default {
 			})
 		},
 		sendData() {
+			const price = this.formData.isNationwide == 1 ? this.showData.price : this.showData.provincePrice;
+			if (!price || price == 0) {
+				this.$message.error('商品价格不可为0');
+				return;
+			}
+			if (!this.showData.number || this.showData.number == 0) {
+				this.$message.error('库存数量不可为0');
+				return;
+			}
 			if (!this.formData.imageUrl) {
 				this.$message.error('请上传付款图片');
 				return;
@@ -172,7 +181,7 @@ export default {
 							goodsName: this.showData.name,
 							number: this.formData.number,
 							imageUrl: this.formData.imageUrl,
-							price: this.formData.isNationwide == 1 ? this.showData.price : this.showData.provincePrice,
+							price: price,
 							adress: this.formData.adress,
 							person: this.formData.person,
 							tel: this.formData.tel,

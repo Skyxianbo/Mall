@@ -7,16 +7,18 @@
       <router-view :key="key" v-if="!$route.meta.noCache"></router-view>
     </keep-alive>
     <router-view :key="key" v-if="$route.meta.noCache"></router-view>
+    <app-footer></app-footer>
   </div>
 </template>
 <script>
-import { Navbar, TagsView, AppHeader } from '@/views/layout/components'
+import { Navbar, TagsView, AppHeader, AppFooter } from '@/views/layout/components'
 export default {
   name: 'app',
   components: {
     Navbar,
     TagsView,
-    AppHeader
+    AppHeader,
+    AppFooter
   },
   computed: {
     key() {

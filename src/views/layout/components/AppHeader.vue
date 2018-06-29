@@ -8,6 +8,7 @@
 				<p>{{date}}</p>
 				<p class="user">
 					<span>当前用户：{{username}}</span>
+					<span style="marginLeft: 10px;">押金：{{income}}</span>
 					<a href="#" style="color: #ccc;" @click.prevent="logout">退出登录</a>
 				</p>
 			</section>
@@ -33,7 +34,10 @@ export default {
 			return myDate.getFullYear() + '年' + (myDate.getMonth() + 1) + '月' + myDate.getDate() + '日' + ' 星期' + week[myDate.getDay()];
 		},
 		username: function() {
-			return this.$store.state.user.name || this.user.userName;
+			return this.$store.state.user.user.userName || this.user.userName;
+		},
+		income: function() {
+			return this.$store.state.user.user.income || this.user.income;
 		},
 		show: function() {
 			return (this.$route.name != 'login' && this.$route.name != 'error' && this.$route.name != 'home');
